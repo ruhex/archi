@@ -1,5 +1,11 @@
 
 
+iwctl
+device list
+station wlan0 scan
+station wlan0 get-networks
+station wlan0 connect SSID
+
 
 timedatectl set-ntp true
 mkfs.fat -F32 /dev/nvme0n1p1
@@ -37,7 +43,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 Networking:
 pacman -S networkmanager
 systemctl enable NetworkManager
-
+nmcli device wifi connect SSID password password
 
 
 ################## INSTALL KDE ##################
@@ -46,3 +52,4 @@ sudo pacman -Syu
 sudo pacman -S xorg
 sudo pacman -S plasma-meta kde-applications
 sudo systemctl enable sddm
+
