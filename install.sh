@@ -2,6 +2,10 @@
 
 # This is Arch Linux Installation Script.
 
+DISK=$1
+P1="/dev/${DISK}1"
+P2="/dev/${DISK}2"
+
 echo "Ruhex Arch Installer"
 
 # Set up time
@@ -13,24 +17,42 @@ pacman-key --populate archlinux
 pacman-key --refresh-keys
 
 # to create the partitions
-echo ',,L' | sfdisk --wipe=always --label=gpt /dev/sda
-echo ",500M,U;" | sfdisk /dev/sda 0
-echo ",,,;" | sfdisk /dev/sda 1
+(
+echo g # Create a new empty GPT partition table
+echo d
+echo d
+echo n
+echo 1
+echo 
+echo +512M
+echo y
+echo n
+echo 2
+echo 
+echo 
+echo t
+echo 1
+echo 1
+echo p
+echo w # Write changes
+echo q
+) | sudo fdisk /dev/$DISK
 
 # Format the partitions
-mkfs.fat -F32 /dev/sda1
-mkfs.btrfs -L test -n 32k /dev/sda2
+mkfs.fat -F32 /dev/$P1
+mkfs.btrfs -L test -n 32k /dev/$P2
 
 
 # Mount the partitions
-mount /dev/sda2 /mnt
+mount /dev/$P2 /mnt
 mkdir /boot/EFI
-mount /dev/sda1 /boot/EFI
+mount /dev/$P1 /boot/EFI
 
 # Install Arch Linux
 echo "Starting install.."
 echo "Installing Arch Linux, GRUB2 as bootloader and other utils"
-pacstrap /mnt base base-devel linux linux-firmware intel-ucode efibootmgr dosfstools os-prober mtools freetype2 grub sway nano git zip networkmanager openssh
+# disable linux-firmware
+pacstrap /mnt base base-devel linux intel-ucode efibootmgr dosfstools os-prober mtools freetype2 grub sway nano git zip networkmanager openssh
 
 # Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
