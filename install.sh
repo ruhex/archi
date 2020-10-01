@@ -45,14 +45,12 @@ mkfs.btrfs -L arch -n 32k $P2
 
 # Mount the partitions
 mount $P2 /mnt
-mkdir -pv /mnt/boot/efi
-mount /dev/$P1 /mnt/boot/efi
-
+mkdir -pv /mnt/boot/EFI
+mount /dev/$P1 /mnt/boot/EFI
 # Install Arch Linux
 echo "Starting install.."
 echo "Installing Arch Linux, GRUB2 as bootloader and other utils"
-#no linux-firmware
-pacstrap /mnt base base-devel linux intel-ucode efibootmgr dosfstools os-prober mtools freetype2 grub sway nano git zip networkmanager openssh
+pacstrap /mnt base base-devel linux-firmware linux intel-ucode efibootmgr dosfstools os-prober mtools freetype2 grub sway nano git zip networkmanager openssh
 
 # Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab

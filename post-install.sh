@@ -18,13 +18,13 @@ echo "::1		localhost" >> /etc/hosts
 echo "127.0.1.1	barsik.localdomain	barsik" >> /etc/hosts
 
 # Generate initramfs
-mkinitcpio -P
+# mkinitcpio -P
 
 # Set root password
 passwd
 
 # Install bootloader
-grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=barsik --recheck
+grub-install --target=x86_64-efi --efi-directory=/boot/EFI --bootloader-id=barsik --recheck
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # Create new user
