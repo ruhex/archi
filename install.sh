@@ -45,8 +45,8 @@ mkfs.btrfs -L test -n 32k $P2
 
 # Mount the partitions
 mount $P2 /mnt
-mkdir /boot/EFI
-mount $P1 /boot/EFI
+mkdir -pv /mnt/boot/efi
+mount $P1 /mnt/boot/efi
 
 # Install Arch Linux
 echo "Starting install.."
