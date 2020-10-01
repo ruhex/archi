@@ -13,9 +13,32 @@ pacman-key --populate archlinux
 pacman-key --refresh-keys
 
 # to create the partitions
-echo ',,L' | sfdisk --wipe=always --label=gpt /dev/sda
-echo ",500M,U;" | sfdisk /dev/sda 0
-echo ",,,;" | sfdisk /dev/sda 1
+#echo ',,L' | sfdisk --wipe=always --label=gpt /dev/sda
+#echo ",500M,U;" | sfdisk /dev/sda 0
+#echo ",,,;" | sfdisk /dev/sda 1
+
+# to create the partitions programatically (rather than manually)
+# https://superuser.com/a/984637
+sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk ${TGTDEV}
+  g # GPT lable
+  o # clear the in memory partition table
+  n # new partition
+  p # primary partition
+  1 # partition number 1
+    # default - start at beginning of disk 
+  +512M # 512 MB boot parttion
+  n # new partition
+  p # primary partition
+  2 # partion number 2
+    # default, start immediately after preceding partition
+    # default, extend partition to end of disk
+  a # make a partition bootable
+  1 # bootable partition is partition 1 -- /dev/sda1
+  p # print the in-memory partition table
+  w # write the partition table
+  q # and we're done
+EOF
+
 
 # Format the partitions
 mkfs.fat -F32 /dev/sda1
@@ -30,7 +53,7 @@ mount /dev/sda1 /boot/EFI
 # Install Arch Linux
 echo "Starting install.."
 echo "Installing Arch Linux, GRUB2 as bootloader and other utils"
-pacstrap /mnt base base-devel intel-ucode efibootmgr dosfstools os-prober mtools freetype2 grub sway nano git zip networkmanager openssh
+pacstrap /mnt base base-devel linux intel-ucode efibootmgr dosfstools os-prober mtools freetype2 grub sway nano git zip networkmanager openssh
 
 # Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
