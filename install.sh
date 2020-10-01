@@ -39,14 +39,14 @@ echo q
 ) | sudo fdisk /dev/$DISK
 
 # Format the partitions
-mkfs.fat -F32 /dev/$P1
-mkfs.btrfs -L test -n 32k /dev/$P2
+mkfs.fat -F32 $P1
+mkfs.btrfs -L test -n 32k $P2
 
 
 # Mount the partitions
-mount /dev/$P2 /mnt
+mount $P2 /mnt
 mkdir /boot/EFI
-mount /dev/$P1 /boot/EFI
+mount $P1 /boot/EFI
 
 # Install Arch Linux
 echo "Starting install.."
