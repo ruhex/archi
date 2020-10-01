@@ -18,7 +18,7 @@ echo "::1		localhost" >> /etc/hosts
 echo "127.0.1.1	barsik.localdomain	barsik" >> /etc/hosts
 
 # Generate initramfs
-mkinitcpio -P
+# mkinitcpio -P
 
 # Set root password
 passwd

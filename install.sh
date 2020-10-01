@@ -40,7 +40,7 @@ echo q
 
 # Format the partitions
 mkfs.fat -F32 $P1
-mkfs.btrfs -L test -n 32k $P2
+mkfs.btrfs -L arch -n 32k $P2
 
 
 # Mount the partitions
@@ -51,8 +51,7 @@ mount $P1 /mnt/boot/efi
 # Install Arch Linux
 echo "Starting install.."
 echo "Installing Arch Linux, GRUB2 as bootloader and other utils"
-# disable linux-firmware
-pacstrap /mnt base base-devel linux intel-ucode efibootmgr dosfstools os-prober mtools freetype2 grub sway nano git zip networkmanager openssh
+pacstrap /mnt base base-devel linux-firmware linux intel-ucode efibootmgr dosfstools os-prober mtools freetype2 grub sway nano git zip networkmanager openssh
 
 # Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
