@@ -45,13 +45,16 @@ mkfs.btrfs -L arch -n 32k $P2
 
 # Mount the partitions
 mount $P2 /mnt
-mkdir -pv /mnt/boot/EFI
-mount /dev/$P1 /mnt/boot/EFI
+
+mount $P1 /mnt/boot/efi
+
+echo 'Server = https://mirror.yandex.ru/archlinux/$repo/os/$arch' > /etc/pacman.d/mirrorlist
+
+
 # Install Arch Linux
 echo "Starting install.."
 echo "Installing Arch Linux, GRUB2 as bootloader and other utils"
-pacstrap /mnt base base-devel linux-firmware linux intel-ucode efibootmgr dosfstools os-prober mtools freetype2 grub sway nano git zip networkmanager openssh
-
+pacstrap /mnt base base-devel linux linux-firmware dhcpcd networkmanager efibootmgr dosfstools os-prober mtools freetype2 grub sway wget curl vim nano zsh git openssh intel-ucode
 # Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
 
