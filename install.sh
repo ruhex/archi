@@ -13,6 +13,7 @@ pacman-key --populate archlinux
 pacman-key --refresh-keys
 
 # to create the partitions
+echo ',,L' | sfdisk --wipe=always --label=gpt /dev/sda
 echo ",500M,U;" | sfdisk /dev/sda 0
 echo ",,,;" | sfdisk /dev/sda 1
 
